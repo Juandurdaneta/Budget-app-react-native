@@ -1,6 +1,7 @@
 import React, {useState} from "react";
-import { Text, ScrollView, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { Text, ScrollView, View, StyleSheet, TextInput, TouchableOpacity, SafeAreaView } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { FontAwesome } from '@expo/vector-icons';
 
 const AddMovement = () =>{
 
@@ -10,7 +11,8 @@ const AddMovement = () =>{
     const [date, setDate] = useState(new Date())
 
     return(
-        <ScrollView style={styles.container}>
+
+        <SafeAreaView style={styles.container}>
 
             {/* Header, switch entre gasto y ingreso */}
 
@@ -40,18 +42,23 @@ const AddMovement = () =>{
 
             {/* Fin header, switch entre gasto y ingreso  */}
 
-            <View>
-                <TextInput placeholder="¿Cuanto?" value={amount} onChangeText={setAmount} />
-                <TextInput placeholder="Notas" value={notes} onChangeText={setNotes} numberOfLines={4} />
+            <View style={styles.formContainer}>
 
-                <DateTimePicker testID="dateTimePicker" value={date} onChange={setDate} mode='date' is24Hour={true}/>
-
-                <TouchableOpacity>
-                    <Text>Agregar</Text>
+                <TextInput style={styles.formInput} placeholder="¿Cuanto?" value={amount} onChangeText={setAmount} />
+                <TextInput style={styles.formInput} multiline={true} placeholder="Notas" value={notes} onChangeText={setNotes} numberOfLines={4} />
+                
+                <View style={styles.formDateArea}>
+                    <FontAwesome name="calendar" size={24} color="black" />
+                    <DateTimePicker style={styles.formDateInput} testID="dateTimePicker" value={date} onChange={setDate} mode='date' is24Hour={true}/>
+                </View>
+                
+                <TouchableOpacity style={styles.formSubmitButton}>
+                    <Text style={styles.formSubmitButtonText}>Agregar</Text>
                 </TouchableOpacity>
+
             </View>
 
-        </ScrollView>
+        </SafeAreaView>
     )
     
 }
@@ -59,7 +66,7 @@ const AddMovement = () =>{
 const styles = StyleSheet.create({
     container: {
       backgroundColor: '#fff',
-      marginTop: 30
+      flex: 1
     },
     headerText: {
         fontSize: 25,
@@ -87,6 +94,41 @@ const styles = StyleSheet.create({
     blueText: {
         color: '#A8DADC'
     },
+
+    formContainer: {
+        marginHorizontal: 20,
+        marginVertical: 20,
+        flexDirection: 'column',
+        justifyContent:'flex-start'
+    },
+    formInput: {
+        height: 50,
+        marginBottom: 25,
+        backgroundColor: '#F6F6F6',
+        padding: 10,
+        borderRadius: 10
+    },
+    formDateArea : {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    formDateText: {
+        fontSize: 20
+        },  
+    formDateInput : {
+        width: 300
+    },
+    formSubmitButton : {
+        borderRadius: 8,
+        backgroundColor: '#fff',
+        padding: 10,
+        marginTop: 40,
+        borderWidth: 1
+    },
+    formSubmitButtonText : {
+        textAlign: 'center',
+
+    }
 
   });
   

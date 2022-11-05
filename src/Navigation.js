@@ -27,7 +27,9 @@ export default function Navigation(){
                         }
 
                         
-                    }, tabBarShowLabel: false
+                    }, tabBarShowLabel: false,
+                   
+                    
                 })}
             >
                 <Tab.Screen name="Home" component={Home} options={{headerShown: false}} />

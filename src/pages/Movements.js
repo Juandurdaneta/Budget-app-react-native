@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, ScrollView, View, StyleSheet, ActivityIndicator } from "react-native";
+import { Text, ScrollView, View, StyleSheet } from "react-native";
 
 const Movements = () =>{
 
@@ -42,6 +42,7 @@ const Movements = () =>{
 const styles = StyleSheet.create({
     container: {
       backgroundColor: '#fff',
+      marginTop: 30
     },
 
     headerText : {

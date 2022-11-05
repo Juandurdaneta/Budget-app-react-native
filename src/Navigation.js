@@ -1,8 +1,7 @@
 // react navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AiOutlineHome, AiFillHome, AiOutlineWallet, AiFillWallet } from 'react-icons/ai'
-import {BsFillPlusCircleFill} from 'react-icons/bs'
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import Home from './pages/Home'
 import Movements from "./pages/Movements";
 import AddMovement from "./pages/AddMovement";
@@ -17,13 +16,13 @@ export default function Navigation(){
                     tabBarIcon: ({focused, color, size}) =>{
                         let iconName;
                         if(route.name === 'Home'){
-                            iconName = focused ? <AiFillHome size={size} color={color} /> : <AiOutlineHome size={size} color={color} />
+                            iconName = focused ?<Ionicons name="md-home" size={size} color={color} />: <Ionicons name="home-outline" size={size} color={color} />
                             return iconName
                         } else if(route.name ==='AddMovement'){
-                            iconName = <BsFillPlusCircleFill size={size} color={color} />
+                            iconName = <FontAwesome5 name="plus-circle" size={size} color={color} />
                             return iconName
                         } else if(route.name === 'Movements'){
-                            iconName = focused ? <AiFillWallet size={size} color={color} /> : <AiOutlineWallet size={size} color={color} />
+                            iconName = focused ? <Ionicons name="wallet" size={size} color={color}/> : <Ionicons name="wallet-outline" size={size} color={color} />
                             return iconName
                         }
 

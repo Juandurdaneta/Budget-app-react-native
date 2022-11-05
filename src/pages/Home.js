@@ -42,6 +42,7 @@ const Home = ({navigation}) =>{
 const styles = StyleSheet.create({
     container: {
       backgroundColor: '#fff',
+      marginTop: 30
     },
     heroContainer: {
         padding: '5%',

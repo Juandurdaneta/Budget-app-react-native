@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { Text, ScrollView, View, StyleSheet } from "react-native";
+import { Text, ScrollView, View, StyleSheet, SafeAreaView } from "react-native";
+import { movements } from "../utils/MovementsInfo";
+import MovementGrid from "../components/MovementGrid";
 
 const Movements = () =>{
 
     const [selected, setSelected] = useState(true)
 
+
+    
     
 
     return(
-        <ScrollView style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
             <Text style={styles.headerText}>Movimientos</Text>
             {
                 selected 
@@ -33,8 +38,19 @@ const Movements = () =>{
                     </View>
                 </View>
         }
-           
+
+
+        <View style={styles.movementsContainer}>
+             {
+                movements.map((movement, index)=>(
+                    <MovementGrid movement={movement} key={index} />
+                ))
+             }
+        </View>
+
+      
         </ScrollView>
+        </SafeAreaView>
     )
     
 }
@@ -42,7 +58,7 @@ const Movements = () =>{
 const styles = StyleSheet.create({
     container: {
       backgroundColor: '#fff',
-      marginTop: 30
+      flex: 1
     },
 
     headerText : {
@@ -71,6 +87,12 @@ const styles = StyleSheet.create({
     },
     blueText: {
         color: '#A8DADC'
+    },
+    movementsContainer : {
+        backgroundColor: '#f6f6f6',
+        padding: '5%',
+        margin: 20,
+        borderRadius: 15,
     },
 
 

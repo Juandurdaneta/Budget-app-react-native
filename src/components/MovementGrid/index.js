@@ -2,19 +2,30 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
 
-const MovementGrid = ({movement}) =>{
-    return(
-    <View style={styles.container}>
-        <View>
-            <Text style={styles.noteText}>{movement.note}</Text>
-            <Text style={styles.dateText}>{movement.date}</Text>
+const MovementGrid = ({movements}) =>{
+        return(
+            <View>
+            {
+            
+            movements.map((movement, index) =>(
+                <View style={styles.container} key={index}>
+                <View>
+                    <Text style={styles.noteText}>{movement.note}</Text>
+                    <Text style={styles.dateText}>{movement.date}</Text>
+                </View>
+                <View>
+                    {
+                    movement.amount > 0 ? <Text style={[styles.amountText, styles.incomeText]}>{movement.amount}</Text> : <Text style={[styles.amountText, styles.expenseText]}>{movement.amount}</Text>
+                    }
+                </View>
+            </View>
+            ))
+        }
         </View>
-        <View>
-            <Text style={styles.amountText}>${movement.amount}</Text>
-        </View>
-    </View>
-    )
-}
+        )
+
+    
+    }
 
 
 const styles = StyleSheet.create({
@@ -38,6 +49,11 @@ const styles = StyleSheet.create({
     amountText: {
         fontSize: 20,
         marginTop: 10,
+    },
+    expenseText: {
+        color: 'red'
+    },
+    incomeText : {
         color: '#93c47d'
     }
 })

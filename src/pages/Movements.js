@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, ScrollView, View, StyleSheet, SafeAreaView } from "react-native";
-import { movements } from "../utils/MovementsInfo";
 import MovementGrid from "../components/MovementGrid";
+import MovementManager from "../components/MovementsManager";
 
 const Movements = () =>{
 
@@ -41,11 +41,7 @@ const Movements = () =>{
 
 
         <View style={styles.movementsContainer}>
-             {
-                movements.map((movement, index)=>(
-                    <MovementGrid movement={movement} key={index} />
-                ))
-             }
+             <MovementManager isExpense={selected}/>
         </View>
 
       

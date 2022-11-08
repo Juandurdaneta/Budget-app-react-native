@@ -1,48 +1,50 @@
 import React from "react"
-import { Text, ScrollView, View, StyleSheet } from "react-native";
+import { Text, ScrollView, View, StyleSheet, SafeAreaView } from "react-native";
 
 
 
 const Home = ({navigation}) =>{
     return(
-        <ScrollView style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
 
-            <View style={styles.heroContainer}>
-                <Text style={styles.heroContainerTextHeader}>Balance Total</Text>
-                <Text style={styles.heroContainerCurrentAmount}><Text style={styles.grayText}>$</Text>1000</Text>
+                <View style={styles.heroContainer}>
+                    <Text style={styles.heroContainerTextHeader}>Balance Total</Text>
+                    <Text style={styles.heroContainerCurrentAmount}><Text style={styles.grayText}>$</Text>1000</Text>
+                </View>
+
+            <View>
+
+
+                <View style={styles.rowContainer}>
+                    <View style={styles.statsContainer}>
+                        <Text style={styles.heroContainerTextHeader}>Ingreso Total</Text>
+                    </View>
+                    <View style={styles.statsContainer}>
+                        <Text style={styles.heroContainerTextHeader}>Egreso Total</Text>
+                    </View>
+                </View>
+
+
             </View>
 
-           <View>
+                <View style={styles.movementsContainer}>
+                    <View style={styles.movementsContainerHeader}>
+                        <Text style={styles.heroContainerTextHeader}>Ultimos movimientos</Text>
+                        <Text style={[styles.heroContainerTextHeader, styles.blueText]} onPress={() => navigation.navigate('Movements')} >Ver todos</Text>
 
-
-            <View style={styles.rowContainer}>
-                <View style={styles.statsContainer}>
-                    <Text style={styles.heroContainerTextHeader}>Ingreso Total</Text>
+                    </View>
                 </View>
-                <View style={styles.statsContainer}>
-                    <Text style={styles.heroContainerTextHeader}>Egreso Total</Text>
-                </View>
-            </View>
 
-
-           </View>
-
-            <View style={styles.movementsContainer}>
-                <View style={styles.movementsContainerHeader}>
-                    <Text style={styles.heroContainerTextHeader}>Ultimos movimientos</Text>
-                    <Text style={[styles.heroContainerTextHeader, styles.blueText]} onPress={() => navigation.navigate('Movements')} >Ver todos</Text>
-
-                </View>
-            </View>
-
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
       backgroundColor: '#fff',
-      marginTop: 30
+      flex: 1
     },
     heroContainer: {
         padding: '5%',

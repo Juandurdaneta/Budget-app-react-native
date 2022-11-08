@@ -2,40 +2,78 @@ import React, {useState} from "react";
 import { Text, ScrollView, View, StyleSheet, TextInput, TouchableOpacity, SafeAreaView } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AddMovement = () =>{
 
-    const [selected, setSelected] = useState('Gasto')
+    const [isExpense, setIsExpense] = useState(true)
     const [amount, setAmount] = useState()
     const [notes, setNotes] = useState('')
     const [date, setDate] = useState(new Date())
 
+    const handleSubmit = async() =>{
+        try {
+
+            const movements = await AsyncStorage.getItem('MOVEMENTS')
+
+
+            const data = {
+                'amount': parseInt(amount),
+                'isExpense': isExpense,
+                'note': notes,
+                'date': date
+            }
+
+            console.log(data)
+
+            if(!movements){
+                const myMovements = [data]
+                await AsyncStorage.setItem('MOVEMENTS', JSON.stringify(myMovements))
+            } else {
+                const myMovements = JSON.parse(movements)
+                myMovements.push(data)
+                await AsyncStorage.setItem('MOVEMENTS', JSON.stringify(myMovements))
+            }
+
+        } catch(error){
+            console.log(error.message)
+        }
+    }
+
     return(
 
-        <SafeAreaView style={styles.container}>
-
+        <SafeAreaView style={styles.container} >
+            <ScrollView keyboardShouldPersistTaps='handled'>
             {/* Header, switch entre gasto y ingreso */}
 
-            <View>
-                <Text style={styles.headerText}>Nuevo {selected}</Text>
-            </View>
+           
             {
-            selected == 'Gasto' ?
-            <View style={styles.toggleType}>
-                <View style={[styles.selectedType, styles.type]}>
-                    <Text>Gasto</Text>
+            isExpense ?
+            <View>
+                <View>
+                    <Text style={styles.headerText}>Nuevo Gasto</Text>
                 </View>
-                <View style={styles.type}>
-                    <Text style={styles.blueText} onPress={()=> setSelected('Ingreso')}>Ingreso</Text>
+                <View style={styles.toggleType}>
+                    <View style={[styles.selectedType, styles.type]}>
+                        <Text>Gasto</Text>
+                    </View>
+                    <View style={styles.type}>
+                        <Text style={styles.blueText} onPress={()=> setIsExpense(false)}>Ingreso</Text>
+                    </View>
                 </View>
             </View>
             :
-            <View style={styles.toggleType}>
-                <View style={styles.type}>
-                    <Text style={styles.blueText}  onPress={()=> setSelected('Gasto')}>Gasto</Text>
+            <View>
+                <View>
+                    <Text style={styles.headerText}>Nuevo Ingreso</Text>
                 </View>
-                <View style={[styles.type,styles.selectedType]}>
-                    <Text >Ingreso</Text>
+                <View style={styles.toggleType}>
+                    <View style={styles.type}>
+                        <Text style={styles.blueText}  onPress={()=> setIsExpense(true)}>Gasto</Text>
+                    </View>
+                    <View style={[styles.type,styles.selectedType]}>
+                        <Text >Ingreso</Text>
+                    </View>
                 </View>
             </View>
             }
@@ -44,7 +82,7 @@ const AddMovement = () =>{
 
             <View style={styles.formContainer}>
 
-                <TextInput style={styles.formInput} placeholder="¿Cuanto?" value={amount} onChangeText={setAmount} />
+                <TextInput  keyboardType='numeric' style={styles.formInput} placeholder="¿Cuanto?" value={amount} onChangeText={setAmount} />
                 <TextInput style={styles.formInput} multiline={true} placeholder="Notas" value={notes} onChangeText={setNotes} numberOfLines={4} />
                 
                 <View style={styles.formDateArea}>
@@ -52,12 +90,12 @@ const AddMovement = () =>{
                     <DateTimePicker style={styles.formDateInput} testID="dateTimePicker" value={date} onChange={setDate} mode='date' is24Hour={true}/>
                 </View>
                 
-                <TouchableOpacity style={styles.formSubmitButton}>
+                <TouchableOpacity style={styles.formSubmitButton} onPress={handleSubmit}>
                     <Text style={styles.formSubmitButtonText}>Agregar</Text>
                 </TouchableOpacity>
 
             </View>
-
+            </ScrollView>
         </SafeAreaView>
     )
     

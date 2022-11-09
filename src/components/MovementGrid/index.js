@@ -15,7 +15,7 @@ const MovementGrid = ({movements}) =>{
                 </View>
                 <View>
                     {
-                    movement.amount > 0 ? <Text style={[styles.amountText, styles.incomeText]}>{movement.amount}</Text> : <Text style={[styles.amountText, styles.expenseText]}>{movement.amount}</Text>
+                    !movement.isExpense ? <Text style={[styles.amountText, styles.incomeText]}>{movement.amount}</Text> : <Text style={[styles.amountText, styles.expenseText]}>{movement.amount}</Text>
                     }
                 </View>
             </View>

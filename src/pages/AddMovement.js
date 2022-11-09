@@ -15,6 +15,7 @@ const AddMovement = () =>{
         try {
 
             const movements = await AsyncStorage.getItem('MOVEMENTS')
+            console.log(movements)
 
 
             const data = {

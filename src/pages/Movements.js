@@ -1,19 +1,55 @@
-import React, { useState } from "react";
-import { Text, ScrollView, View, StyleSheet, SafeAreaView } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { Text, ScrollView, View, StyleSheet, SafeAreaView, RefreshControl } from "react-native";
 import MovementGrid from "../components/MovementGrid";
-import MovementManager from "../components/MovementsManager";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Movements = () =>{
 
     const [selected, setSelected] = useState(true)
+    const [refreshing, setRefreshing] = useState(false)
+    const [movements, setMovements] = useState()
+   
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+      }
+
+    const getData = async () => {
+        try {
+        const jsonValue = await AsyncStorage.getItem('MOVEMENTS')
+        setMovements(JSON.parse(jsonValue))
+        } catch(e) {
+        console.log(e.message)
+        }
+    }
+
+    useEffect(() => {
+        getData()
+
+    }, [])
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        getData();
+        wait(2000).then(() => setRefreshing(false));
+      }, []);
 
 
+    let expenses;
+    let income;
+
+    if(movements){
+        expenses = movements.filter(movement => movement.isExpense);
+        income = movements.filter(movement => !movement.isExpense)
+    }
     
     
 
     return(
         <SafeAreaView style={styles.container}>
-            <ScrollView>
+            <ScrollView
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            >
             <Text style={styles.headerText}>Movimientos</Text>
             {
                 selected 
@@ -41,7 +77,15 @@ const Movements = () =>{
 
 
         <View style={styles.movementsContainer}>
-             <MovementManager isExpense={selected}/>
+        <View>
+         {
+      
+
+            selected ? expenses && expenses.length > 0 ? <MovementGrid movements={expenses}/> : <Text>No expenses found</Text> : income && income.length > 0 ? <MovementGrid movements={income}/> : <Text>No income found</Text>
+
+
+        }
+        </View>
         </View>
 
       

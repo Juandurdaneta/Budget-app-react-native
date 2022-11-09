@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react"
-import { Text, ScrollView, View, StyleSheet, SafeAreaView } from "react-native";
+import React, {useState, useEffect, useCallback} from "react"
+import { Text, ScrollView, View, StyleSheet, SafeAreaView, RefreshControl } from "react-native";
 import MovementGrid from "../components/MovementGrid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -8,6 +8,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Home = ({navigation}) =>{
 
     const [movements, setMovements] = useState()
+    const [refreshing, setRefreshing] = useState(false)
+
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+      }
 
     const getData = async () => {
         try {
@@ -23,13 +29,22 @@ const Home = ({navigation}) =>{
 
     }, [])
 
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        getData();
+        wait(2000).then(() => setRefreshing(false));
+      }, []);
 
     
 
 
     return(
         <SafeAreaView style={styles.container}>
-            <ScrollView>
+            <ScrollView
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            >
+
+                
 
                 <View style={styles.heroContainer}>
                     <Text style={styles.heroContainerTextHeader}>Balance Total</Text>

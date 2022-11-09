@@ -1,9 +1,32 @@
-import React from "react"
+import React, {useState, useEffect} from "react"
 import { Text, ScrollView, View, StyleSheet, SafeAreaView } from "react-native";
+import MovementGrid from "../components/MovementGrid";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
 const Home = ({navigation}) =>{
+
+    const [movements, setMovements] = useState()
+
+    const getData = async () => {
+        try {
+        const jsonValue = await AsyncStorage.getItem('MOVEMENTS')
+        setMovements(JSON.parse(jsonValue))
+        } catch(e) {
+        console.error(e.message)
+        }
+    }
+
+    useEffect(() => {
+        getData()
+
+    }, [])
+
+
+    
+
+
     return(
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -34,6 +57,18 @@ const Home = ({navigation}) =>{
                         <Text style={[styles.heroContainerTextHeader, styles.blueText]} onPress={() => navigation.navigate('Movements')} >Ver todos</Text>
 
                     </View>
+                {
+                    movements ? 
+                    <View>
+                        <MovementGrid movements={movements} />
+                    </View>
+                    :
+                    <View>
+                        <Text>No movements found...</Text>
+                    </View>
+                }
+                    
+
                 </View>
 
             </ScrollView>
@@ -88,7 +123,8 @@ const styles = StyleSheet.create({
 
     movementsContainerHeader : {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom: 15
     }
 
   });

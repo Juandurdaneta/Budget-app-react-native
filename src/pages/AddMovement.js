@@ -35,6 +35,10 @@ const AddMovement = () =>{
                 await AsyncStorage.setItem('MOVEMENTS', JSON.stringify(myMovements))
             }
 
+            setAmount('')
+            setNotes('')
+            setDate(new Date())
+
         } catch(error){
             console.log(error.message)
         }

@@ -33,20 +33,13 @@ const MovementManager = ({isExpense}) =>{
         income = movements.filter(movement => !movement.isExpense)
     }
 
-    // console.log(expenses, income)
   
     return(
         <View>
     {
-        // isExpense ? 
-        // // <MovementGrid movements={expenses} /> 
-        // <Text>hello</Text>
-        // : 
-        // // <MovementGrid movements={income} />
-        // <Text>hello</Text>
+      
 
-
-        isExpense ? expenses ? <MovementGrid movements={expenses}/> : <Text>No expenses found</Text> : income ? <MovementGrid movements={income}/> : <Text>No income found</Text>
+        isExpense ? expenses && expenses.length > 0 ? <MovementGrid movements={expenses}/> : <Text>No expenses found</Text> : income && income.length > 0 ? <MovementGrid movements={income}/> : <Text>No income found</Text>
 
 
     }

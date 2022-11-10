@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import Home from './pages/Home'
 import Movements from "./pages/Movements";
 import AddMovement from "./pages/AddMovement";
+import FlashMessage from "react-native-flash-message";
 const Tab = createBottomTabNavigator();
 
 
@@ -37,6 +38,7 @@ export default function Navigation(){
                 <Tab.Screen name="Movements" component={Movements} options={{headerShown: false}} />
 
             </Tab.Navigator>
+            <FlashMessage position="bottom" />
         </NavigationContainer>
     )
 }

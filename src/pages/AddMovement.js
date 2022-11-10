@@ -3,6 +3,7 @@ import { Text, ScrollView, View, StyleSheet, TextInput, TouchableOpacity, SafeAr
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { showMessage } from "react-native-flash-message";
 
 const AddMovement = () =>{
 
@@ -39,6 +40,11 @@ const AddMovement = () =>{
             setAmount('')
             setNotes('')
             setDate(new Date())
+
+            showMessage({
+                message: 'Entrada agregada exitosamente!',
+                type: 'success'
+            })
 
         } catch(error){
             console.log(error.message)

@@ -48,6 +48,10 @@ const AddMovement = () =>{
 
         } catch(error){
             console.log(error.message)
+            showMessage({
+                message: `Algo ha salido mal, ${error.message}`,
+                type: 'error'
+            })
         }
     }
 

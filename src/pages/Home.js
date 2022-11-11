@@ -37,7 +37,6 @@ const Home = ({navigation}) =>{
         latestMovements ?
         latestMovements.map((movement) =>{
             if(movement.isExpense){
-                console.log('here')
                 totalBalance -= movement.amount
             } else {
                 totalBalance += movement.amount
@@ -179,7 +178,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 10
     },
-
+    expenseText: {
+        color: 'red'
+    },
+    incomeText : {
+        color: '#93c47d'
+    }
   });
   
 

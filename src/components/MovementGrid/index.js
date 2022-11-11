@@ -21,7 +21,7 @@ const MovementGrid = ({movements}) =>{
             <View>
             {
             
-            movements.map((movement, index) =>(
+            movements.reverse().map((movement, index) =>(
                 <View style={styles.container} key={index}>
                 <View>
                     <Text style={styles.noteText}>{movement.note}</Text>

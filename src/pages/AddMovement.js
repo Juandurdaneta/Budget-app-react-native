@@ -28,6 +28,10 @@ const AddMovement = () =>{
 
             console.log(data)
 
+            if(isNaN(data.amount)){
+                throw 'La cantidad ingresada no es un número válido.'
+            }
+
             if(!movements){
                 const myMovements = [data]
                 await AsyncStorage.setItem('MOVEMENTS', JSON.stringify(myMovements))
@@ -47,10 +51,10 @@ const AddMovement = () =>{
             })
 
         } catch(error){
-            console.log(error.message)
+        
             showMessage({
-                message: `Algo ha salido mal, ${error.message}`,
-                type: 'error'
+                message: `Algo ha salido mal...\n${error}`,
+                type: 'danger'
             })
         }
     }

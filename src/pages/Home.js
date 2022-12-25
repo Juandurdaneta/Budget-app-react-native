@@ -109,8 +109,11 @@ const Home = ({navigation}) =>{
                         <MovementGrid movements={movements} />
                     </View>
                     :
-                    <View>
-                        <Text>No movements found...</Text>
+                    <View style={styles.noMovementsFoundContainer}>
+                        <Text>Aun no se han agregado movimientos...</Text>
+                        <Text style={[styles.heroContainerTextHeader, styles.blueText]} onPress={() => navigation.navigate('AddMovement')} >Agregar</Text>
+
+                        
                     </View>
                 }
                     
@@ -165,7 +168,6 @@ const styles = StyleSheet.create({
         padding: '5%',
         margin: 20,
         borderRadius: 15,
-        height: '100%'
     },
 
     movementsContainerHeader : {
@@ -173,6 +175,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 15
     },
+
+    noMovementsFoundContainer : {
+        padding: '8%',
+        textAlign: 'center',
+    },
+
     amountText: {
         fontSize: 22,
         textAlign: 'center',

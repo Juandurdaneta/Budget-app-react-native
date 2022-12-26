@@ -1,17 +1,6 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-
-
-const formatDate = (date) => {
-    const options = {
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-    }
-    const formatedDate = new Date(date).toLocaleDateString('es-MX', options)
-
-    return formatedDate
-}
+import { Text, View, StyleSheet, Modal } from "react-native";
+import { formatDate } from "../../utils/formatDate";
 
 
 const MovementGrid = ({movements}) =>{
@@ -21,7 +10,7 @@ const MovementGrid = ({movements}) =>{
             <View>
             {
             
-            movements.reverse().map((movement, index) =>(
+            movements.map((movement, index) =>(
                 <View style={styles.container} key={index}>
                 <View>
                     <Text style={styles.noteText}>{movement.note}</Text>
@@ -35,6 +24,9 @@ const MovementGrid = ({movements}) =>{
             </View>
             ))
         }
+
+
+
         </View>
         )
 

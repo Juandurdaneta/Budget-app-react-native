@@ -85,7 +85,7 @@ const Movements = ({navigation}) =>{
          {
       
 
-            selected ? expenses && expenses.length > 0 ? <MovementGrid movements={expenses}/> : <NoMovementFoundMessage navigation={navigation} /> : income && income.length > 0 ? <MovementGrid movements={income}/> : <NoMovementFoundMessage navigation={navigation} /> 
+            selected ? expenses && expenses.length > 0 ? <MovementGrid dataCallback={getData} movements={expenses}/> : <NoMovementFoundMessage navigation={navigation} /> : income && income.length > 0 ? <MovementGrid dataCallback={getData} movements={income}/> : <NoMovementFoundMessage navigation={navigation} /> 
 
 
         }

@@ -20,7 +20,8 @@ const AddMovement = () =>{
 
 
             const data = {
-                'amount': parseInt(amount),
+                'id': Date.now(),
+                'amount': parseFloat(amount),
                 'isExpense': isExpense,
                 'note': notes,
                 'date': date

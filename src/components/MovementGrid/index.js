@@ -19,22 +19,31 @@ const MovementGrid = ({movements, dataCallback}) =>{
     // callbacks
     const openModal = (tx) =>{
         bottomSheetModalRef.current.present();
+        console.log(tx);
         setTransaction(tx);
     }
 
     // remove transaction
     const removeTransaction = async (tx) => {
-        bottomSheetModalRef.current.dismiss();
 
         try {
+
+            console.log(tx);
+
             const jsonValue = await AsyncStorage.getItem('MOVEMENTS')
             const transactions = JSON.parse(jsonValue);
-            const txIndex = transactions.indexOf(tx);
-            transactions.splice(txIndex, 1);
+            
+            const newTransactions = transactions.filter((value)=>{
+                return value['id'] != tx['id'];
+            });
 
-            await AsyncStorage.setItem('MOVEMENTS', JSON.stringify(transactions))
+
+            await AsyncStorage.setItem('MOVEMENTS', JSON.stringify(newTransactions))
 
             dataCallback();
+
+            bottomSheetModalRef.current.dismiss();
+
 
         } catch(e){
             showMessage({
@@ -43,11 +52,6 @@ const MovementGrid = ({movements, dataCallback}) =>{
             })
         }
     }
-    
-
-    const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-    }, []);
 
         return(
             <>
@@ -80,7 +84,6 @@ const MovementGrid = ({movements, dataCallback}) =>{
                     ref={bottomSheetModalRef}
                     index={1}
                     snapPoints={snapPoints}
-                    onChange={handleSheetChanges}
                     >
             <View style={styles.contentContainer}>
                 <TouchableOpacity style={styles.modalContainerItem} onPress={() => removeTransaction(transaction) }>

@@ -1,7 +1,7 @@
-import React, {useRef, useMemo, useCallback, useState} from "react";
-import { Text, View, StyleSheet, Modal, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { formatDate } from "../../utils/formatDate";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import Modal from "react-native-modal";
 import { FontAwesome } from '@expo/vector-icons';
 import { showMessage } from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -11,15 +11,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const MovementGrid = ({movements, dataCallback}) =>{
 
     const [transaction, setTransaction] = useState({});
-
-    // ref
-    const bottomSheetModalRef = useRef(null);
-    // variables
-    const snapPoints = useMemo(() => ['25%', '12%'], []);
+    const [isModalVisible, setIsModalVisible] = useState(false)
+  
     // callbacks
     const openModal = (tx) =>{
-        bottomSheetModalRef.current.present();
-        console.log(tx);
+        setIsModalVisible(!isModalVisible);
         setTransaction(tx);
     }
 
@@ -27,8 +23,8 @@ const MovementGrid = ({movements, dataCallback}) =>{
     const removeTransaction = async (tx) => {
 
         try {
+            setIsModalVisible(false);
 
-            console.log(tx);
 
             const jsonValue = await AsyncStorage.getItem('MOVEMENTS')
             const transactions = JSON.parse(jsonValue);
@@ -42,7 +38,6 @@ const MovementGrid = ({movements, dataCallback}) =>{
 
             dataCallback();
 
-            bottomSheetModalRef.current.dismiss();
 
 
         } catch(e){
@@ -80,18 +75,16 @@ const MovementGrid = ({movements, dataCallback}) =>{
 
         </View>
 
-            <BottomSheetModal
-                    ref={bottomSheetModalRef}
-                    index={1}
-                    snapPoints={snapPoints}
-                    >
-            <View style={styles.contentContainer}>
-                <TouchableOpacity style={styles.modalContainerItem} onPress={() => removeTransaction(transaction) }>
-                    <FontAwesome name="trash" size={20} color="black" />
-                    <Text style={styles.modalContainerText}>Eliminar</Text>
-                </TouchableOpacity>
-            </View>
-            </BottomSheetModal>
+        <View>
+            <Modal  style={styles.modalWrapper} onBackdropPress={()=> setIsModalVisible(!isModalVisible)} isVisible={isModalVisible} onSwipeComplete={()=> setIsModalVisible(!isModalVisible)} swipeDirection='down'>
+                <View style={styles.modalContainer}>
+                    <TouchableOpacity style={styles.modalItem} onPress={()=>removeTransaction(transaction)}>
+                        <FontAwesome name="trash" size={20} color="black" />
+                        <Text style={styles.modalItemText}>Eliminar</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+        </View>
 
         </>
         )
@@ -134,15 +127,26 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'start',
       },
-    modalContainerItem : {
-        flexDirection:'row',
-        justifyContent: 'space-between',
-        rowGap: 10
+    modalWrapper: {
+        flex: 1,
+        backgroundColor: '#fff',
+        width: '100%',
+        marginBottom: 0,
+        marginStart: 0,
+        marginTop: '160%',
     },
-    modalContainerText : {
-        marginStart: 20,
+    modalContainer: {
+        padding: '3%'
+    },
+    modalItem:{
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    modalItemText : {
+        marginStart: 10,
         fontSize: 16
     }
+
 })
 
 export default MovementGrid;

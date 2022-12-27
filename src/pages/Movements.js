@@ -3,6 +3,7 @@ import { Text, ScrollView, View, StyleSheet, SafeAreaView, RefreshControl } from
 import MovementGrid from "../components/MovementGrid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoMovementFoundMessage from "../components/NoMovementFoundMessage";
+import { showMessage } from "react-native-flash-message";
 
 const Movements = ({navigation}) =>{
 
@@ -20,7 +21,10 @@ const Movements = ({navigation}) =>{
         const jsonValue = await AsyncStorage.getItem('MOVEMENTS')
         setMovements(JSON.parse(jsonValue))
         } catch(e) {
-        console.log(e.message)
+            showMessage({
+                message: `Algo ha salido mal...\n${e}`,
+                type: 'danger'
+            })
         }
     }
 

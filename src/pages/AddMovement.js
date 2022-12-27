@@ -16,8 +16,6 @@ const AddMovement = () =>{
         try {
 
             const movements = await AsyncStorage.getItem('MOVEMENTS')
-            console.log(movements)
-
 
             const data = {
                 'id': Date.now(),
@@ -27,7 +25,6 @@ const AddMovement = () =>{
                 'date': date
             }
 
-            console.log(data)
 
             if(isNaN(data.amount)){
                 throw 'La cantidad ingresada no es un número válido.'

@@ -61,7 +61,7 @@ const Home = ({navigation}) =>{
 
                 <View style={styles.heroContainer}>
                     <Text style={styles.heroContainerTextHeader}>Balance Total</Text>
-                    <Text style={styles.heroContainerCurrentAmount}><Text style={styles.grayText}>$</Text>{balance}</Text>
+                    <Text style={styles.heroContainerCurrentAmount}><Text style={styles.grayText}>$</Text>{balance.toFixed(2)}</Text>
                 </View>
 
             <View>
@@ -70,12 +70,12 @@ const Home = ({navigation}) =>{
                 <View style={styles.rowContainer}>
                     <View style={styles.statsContainer}>
                         <Text style={styles.heroContainerTextHeader}>Ingreso Total</Text>
-                        <Text style={styles.amountText}>${income}</Text>
+                        <Text style={styles.amountText}>${income.toFixed(2)}</Text>
 
                     </View>
                     <View style={styles.statsContainer}>
                         <Text style={styles.heroContainerTextHeader}>Egreso Total</Text>
-                        <Text style={styles.amountText}>-${expense}</Text>
+                        <Text style={styles.amountText}>-${expense.toFixed(2)}</Text>
                     </View>
                 </View>
 

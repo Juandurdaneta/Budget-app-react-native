@@ -1,23 +1,50 @@
-import React, {useRef, useMemo, useCallback} from "react";
+import React, {useRef, useMemo, useCallback, useState} from "react";
 import { Text, View, StyleSheet, Modal, TouchableOpacity } from "react-native";
 import { formatDate } from "../../utils/formatDate";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { FontAwesome } from '@expo/vector-icons';
+import { showMessage } from "react-native-flash-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
-const MovementGrid = ({movements}) =>{
+const MovementGrid = ({movements, dataCallback}) =>{
+
+    const [transaction, setTransaction] = useState({});
 
     // ref
     const bottomSheetModalRef = useRef(null);
     // variables
     const snapPoints = useMemo(() => ['25%', '12%'], []);
     // callbacks
-    const handlePresentModalPress = useCallback(() => {
-        if (bottomSheetModalRef.current) {
-            bottomSheetModalRef.current.present();
+    const openModal = (tx) =>{
+        bottomSheetModalRef.current.present();
+        setTransaction(tx);
+    }
+
+    // remove transaction
+    const removeTransaction = async (tx) => {
+        bottomSheetModalRef.current.dismiss();
+
+        try {
+            const jsonValue = await AsyncStorage.getItem('MOVEMENTS')
+            const transactions = JSON.parse(jsonValue);
+            const txIndex = transactions.indexOf(tx);
+            transactions.splice(txIndex, 1);
+
+            await AsyncStorage.setItem('MOVEMENTS', JSON.stringify(transactions))
+
+            dataCallback();
+
+        } catch(e){
+            showMessage({
+                message: `Algo ha salido mal...\n${e}`,
+                type: 'danger'
+            })
         }
-    }, []);
+    }
+    
+
     const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
     }, []);
@@ -28,7 +55,7 @@ const MovementGrid = ({movements}) =>{
             {
                 
                 movements.map((movement, index) =>(
-                <TouchableOpacity key={index} onPress={handlePresentModalPress}>
+                <TouchableOpacity key={index} onPress={()=> openModal(movement)}>
                     <View style={styles.container} >
                         <View>
                             <Text style={styles.noteText}>{movement.note}</Text>
@@ -48,19 +75,21 @@ const MovementGrid = ({movements}) =>{
    
 
         </View>
-        <BottomSheetModal
-                ref={bottomSheetModalRef}
-                index={1}
-                snapPoints={snapPoints}
-                onChange={handleSheetChanges}
-                >
-          <View style={styles.contentContainer}>
-            <TouchableOpacity style={styles.modalContainerItem}>
-                <FontAwesome name="trash" size={20} color="black" />
-                <Text style={styles.modalContainerText}>Eliminar</Text>
-            </TouchableOpacity>
-          </View>
-        </BottomSheetModal>
+
+            <BottomSheetModal
+                    ref={bottomSheetModalRef}
+                    index={1}
+                    snapPoints={snapPoints}
+                    onChange={handleSheetChanges}
+                    >
+            <View style={styles.contentContainer}>
+                <TouchableOpacity style={styles.modalContainerItem} onPress={() => removeTransaction(transaction) }>
+                    <FontAwesome name="trash" size={20} color="black" />
+                    <Text style={styles.modalContainerText}>Eliminar</Text>
+                </TouchableOpacity>
+            </View>
+            </BottomSheetModal>
+
         </>
         )
 

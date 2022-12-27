@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Text, ScrollView, View, StyleSheet, SafeAreaView, RefreshControl } from "react-native";
 import MovementGrid from "../components/MovementGrid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NoMovementFoundMessage from "../components/NoMovementFoundMessage";
 
-const Movements = () =>{
+const Movements = ({navigation}) =>{
 
     const [selected, setSelected] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
@@ -24,9 +25,12 @@ const Movements = () =>{
     }
 
     useEffect(() => {
-        getData()
+        const unsubscribe = navigation.addListener('focus', () => {
+           getData();
+          });
+          return unsubscribe
+    }, [navigation])
 
-    }, [])
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -81,7 +85,7 @@ const Movements = () =>{
          {
       
 
-            selected ? expenses && expenses.length > 0 ? <MovementGrid movements={expenses}/> : <Text>No expenses found</Text> : income && income.length > 0 ? <MovementGrid movements={income}/> : <Text>No income found</Text>
+            selected ? expenses && expenses.length > 0 ? <MovementGrid movements={expenses}/> : <NoMovementFoundMessage navigation={navigation} /> : income && income.length > 0 ? <MovementGrid movements={income}/> : <NoMovementFoundMessage navigation={navigation} /> 
 
 
         }

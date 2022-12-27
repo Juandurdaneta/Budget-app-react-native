@@ -2,7 +2,8 @@ import React, {useState, useEffect, useCallback} from "react"
 import { Text, ScrollView, View, StyleSheet, SafeAreaView, RefreshControl } from "react-native";
 import MovementGrid from "../components/MovementGrid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getTotalExpense, getTotalIncome } from "../utils/calculations";
+import { getTotalExpense, getTotalIncome, getTotalBalance } from "../utils/calculations";
+import NoMovementFoundMessage from "../components/NoMovementFoundMessage";
 
 
 
@@ -32,29 +33,12 @@ const Home = ({navigation}) =>{
     }
 
     
-    const getTotalBalance = (latestMovements) => {
-        let totalBalance = 0
-        latestMovements ?
-        latestMovements.map((movement) =>{
-            if(movement.isExpense){
-                totalBalance -= movement.amount
-            } else {
-                totalBalance += movement.amount
-            }
-        })
-
-        :
-
-        totalBalance = 0
-
-
-        return totalBalance
-    }
-
     useEffect(() => {
-        getData()
-        
-    }, [])
+        const unsubscribe = navigation.addListener('focus', () => {
+           getData();
+          });
+          return unsubscribe
+    }, [navigation])
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -104,17 +88,12 @@ const Home = ({navigation}) =>{
 
                     </View>
                 {
-                    movements ? 
+                    movements && movements.length > 0 ? 
                     <View>
-                        <MovementGrid movements={movements} />
+                        <MovementGrid movements={movements} dataCallback={getData} />
                     </View>
                     :
-                    <View style={styles.noMovementsFoundContainer}>
-                        <Text>Aun no se han agregado movimientos...</Text>
-                        <Text style={[styles.heroContainerTextHeader, styles.blueText]} onPress={() => navigation.navigate('AddMovement')} >Agregar</Text>
-
-                        
-                    </View>
+                    <NoMovementFoundMessage navigation={navigation} />
                 }
                     
 
@@ -175,11 +154,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 15
-    },
-
-    noMovementsFoundContainer : {
-        padding: '8%',
-        textAlign: 'center',
     },
 
     amountText: {

@@ -12,6 +12,11 @@ const AddMovement = () =>{
     const [notes, setNotes] = useState('')
     const [date, setDate] = useState(new Date())
 
+    const onSelectDate = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setDate(currentDate);
+      };
+
     const handleSubmit = async() =>{
         try {
 
@@ -104,7 +109,7 @@ const AddMovement = () =>{
                 
                 <View style={styles.formDateArea}>
                     <FontAwesome name="calendar" size={24} color="black" />
-                    <DateTimePicker style={styles.formDateInput} testID="dateTimePicker" value={date} onChange={setDate} mode='date' is24Hour={true}/>
+                    <DateTimePicker style={styles.formDateInput} testID="dateTimePicker" value={date} onChange={onSelectDate} mode='date' is24Hour={true}/>
                 </View>
                 
                 <TouchableOpacity style={styles.formSubmitButton} onPress={handleSubmit}>

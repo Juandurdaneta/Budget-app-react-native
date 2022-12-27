@@ -4,6 +4,7 @@ import MovementGrid from "../components/MovementGrid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getTotalExpense, getTotalIncome, getTotalBalance } from "../utils/calculations";
 import NoMovementFoundMessage from "../components/NoMovementFoundMessage";
+import { sortByDate } from "../utils/sortByDate";
 
 
 
@@ -90,7 +91,7 @@ const Home = ({navigation}) =>{
                 {
                     movements && movements.length > 0 ? 
                     <View>
-                        <MovementGrid movements={movements} dataCallback={getData} />
+                        <MovementGrid movements={ sortByDate(movements) } dataCallback={getData} />
                     </View>
                     :
                     <NoMovementFoundMessage navigation={navigation} />

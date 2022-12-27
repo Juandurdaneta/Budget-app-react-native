@@ -4,6 +4,7 @@ import MovementGrid from "../components/MovementGrid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NoMovementFoundMessage from "../components/NoMovementFoundMessage";
 import { showMessage } from "react-native-flash-message";
+import { sortByDate } from "../utils/sortByDate";
 
 const Movements = ({navigation}) =>{
 
@@ -89,7 +90,7 @@ const Movements = ({navigation}) =>{
          {
       
 
-            selected ? expenses && expenses.length > 0 ? <MovementGrid dataCallback={getData} movements={expenses}/> : <NoMovementFoundMessage navigation={navigation} /> : income && income.length > 0 ? <MovementGrid dataCallback={getData} movements={income}/> : <NoMovementFoundMessage navigation={navigation} /> 
+            selected ? expenses && expenses.length > 0 ? <MovementGrid dataCallback={getData} movements={sortByDate(expenses)}/> : <NoMovementFoundMessage navigation={navigation} /> : income && income.length > 0 ? <MovementGrid dataCallback={getData} movements={sortByDate(income)}/> : <NoMovementFoundMessage navigation={navigation} /> 
 
 
         }

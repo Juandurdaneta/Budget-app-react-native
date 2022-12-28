@@ -18,13 +18,24 @@ const AddMovement = () =>{
       };
 
     const handleSubmit = async() =>{
+
+        if(!notes) {
+            showMessage({
+                message: `Por favor, ingresa notas para tu transaccion...`,
+                type: 'danger'
+            })
+            return;
+        }
+
+
+
         try {
 
             const movements = await AsyncStorage.getItem('MOVEMENTS')
 
             const data = {
                 'id': Date.now(),
-                'amount': parseFloat(amount),
+                'amount': Number(amount),
                 'isExpense': isExpense,
                 'note': notes,
                 'date': date

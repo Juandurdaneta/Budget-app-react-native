@@ -62,7 +62,7 @@ const MovementGrid = ({movements, dataCallback}) =>{
                         </View>
                         <View>
                             {
-                                !movement.isExpense ? <Text style={[styles.amountText, styles.incomeText]}>${movement.amount}</Text> : <Text style={[styles.amountText, styles.expenseText]}>-${movement.amount}</Text>
+                                !movement.isExpense ? <Text style={[styles.amountText, styles.incomeText]}>${movement.amount.toFixed(2)}</Text> : <Text style={[styles.amountText, styles.expenseText]}>-${movement.amount.toFixed(2)}</Text>
                             }
                         </View>
                     </View>
